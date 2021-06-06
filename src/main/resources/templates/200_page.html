@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TakiTvP - 200</title>
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/font-awesome/5.15.2/css/all.min.css">
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="welcome_page :: header">...</div>
+<div style="position: relative;top: 80px;">
+    <h2>Message : <span th:utext="${message}" style="color:green"></span></h2>
+</div>
+</body>
+</html>

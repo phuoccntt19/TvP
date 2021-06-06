@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TakiTvP - User</title>
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/font-awesome/5.15.2/css/all.min.css">
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="welcome_page :: header">...</div>
+
+<div class="w-50 m-auto" style="position: relative;top: 80px;">
+    <div class="container p-0">
+        <div class="text-center">
+            <div class="panel panel-default p-4 border border-dark rounded">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add a new note</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="/note" method="post">
+                        <div class="form-group w-100">
+                            <input class="w-100" type="text" id="title" placeholder="Enter a note title." name="title" required>
+                        </div>
+                        <div class="form-group w-100">
+                        <textarea class="w-100" name="content" id="content" cols="30" rows="10"
+                                  placeholder="Enter note text." style="overflow-y: hidden" required></textarea>
+                        </div>
+                        <div class="form-group w-100">
+                            <input class="btn btn-lg btn-success btn-block" type="submit"
+                                   value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container p-0">
+        <div class="col p-0">
+            <div class="panel panel-default p-4 border border-dark rounded mt-2" th:each="note : ${listNote}">
+                <div style="display: none; position:fixed; width: 100%; height: 100%; top: 71px; left: 0px; z-index: 1"
+                     class="bg-light" th:id="'divrepair' + ${note.id}"></div>
+                <div class="container p-0 bg-light w-50"
+                     style="display: none; position: fixed; left: 0px; right: 0px; top: 87px; z-index: 2"
+                     th:id="'repair' + ${note.id}">
+                    <div class="text-center">
+                        <div class="panel panel-default p-4 border border-dark rounded">
+                            <i role="button" class="fas fa-times" style=" position: absolute; top: 10px; right: 10px;"
+                               th:onclick="'unrepair(' + ${note.id} + ')'"></i>
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Repair</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form action="/note/repair" method="post">
+                                    <div class="form-group w-100" style="display: none">
+                                        <input th:id="'id' + ${note.id}" name="id" th:value="${note.id}">
+                                    </div>
+                                    <div class="form-group w-100">
+                                        <input class="w-100" type="text" th:id="'title' + ${note.id}"
+                                               placeholder="Enter a note title." name="title">
+                                    </div>
+                                    <div class="form-group w-100">
+                                        <textarea class="w-100" name="content" th:id="'content' + ${note.id}" cols="30"
+                                                  rows="10" placeholder="Enter note text."
+                                                  style="overflow-y: hidden"></textarea>
+                                    </div>
+                                    <div class="form-group w-100">
+                                        <input class="btn btn-lg btn-success btn-block" type="submit"
+                                               value="Submit">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <a th:utext="${note.user.username}" class="member-name-link"
+                           th:href="'/user/info/' + ${note.user.id}"></a>
+                    </div>
+                    <div class="col text-right">
+                        <p th:utext="${note.getDateFormat()}"></p>
+                    </div>
+                </div>
+                <form action="/note" method="post" th:object="${note}">
+                    <div class="form-group w-100">
+                        <h5 th:utext="${note.title}"></h5>
+                    </div>
+                    <div class="form-group w-100">
+                        <pre th:utext="${note.content}"></pre>
+                    </div>
+                </form>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <form action="/note/delete" method="get">
+                                <input type="text" name="id" id="id" style="display: none" th:value="${note.id}">
+                                <input class="btn btn-lg btn-block text-danger border" type="submit"
+                                       value="Delete">
+                            </form>
+                        </div>
+                        <div class="col">
+                            <input class="btn btn-lg btn-block border" type="button" value="Repair"
+                                   th:onclick="'repair(' + ${note.id} + ')'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function repair(id) {
+        document.getElementById('repair' + id).style.display = "block";
+        document.getElementById('divrepair' + id).style.display = "block";
+    }
+
+    function unrepair(id) {
+        document.getElementById('repair' + id).style.display = "none";
+        document.getElementById('divrepair' + id).style.display = "none";
+    }
+</script>
+
+</body>
+</html>

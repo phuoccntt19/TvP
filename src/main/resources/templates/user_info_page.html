@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TakiTvP - User</title>
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/font-awesome/5.15.2/css/all.min.css">
+    <link type="text/css" rel="stylesheet"
+          href="/webjars/bootstrap/4.6.0-1/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="welcome_page :: header">...</div>
+<div style="position: relative;top: 80px;">
+    <div style="height: 300px; width: 60%; margin: auto" class="bg-dark"></div>
+    <div style="height: 220px; width: 220px; background-color: white; border-radius: 50%; margin: auto; position: relative; top: -160px; z-index: 1"></div>
+    <div style="height: 200px; width: 200px; background-color: black; border-radius: 50%; margin: auto; position: relative; top: -370px; z-index: 3">
+        <h2 style="width: 200%;position: relative;left: -50%;top: 100%;text-align: center"
+            th:utext="${userInfo.getFullName()}"></span></h2>
+    </div>
+    <hr style="width: 60%; margin: auto; position:relative; top: -250px">
+    <div style="width: 60%; margin: auto; position: relative; top: -200px; z-index: 2; padding: 20px"
+         class="bg-light border-info">
+        <h2 class="text-center">Thông tin tài khoản</h2>
+        <div class="container">
+            <div class="row p-2">
+                <div class="col-3">Tên tài khoản:</div>
+                <div class="col" th:utext="${user.username}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col-3">Tên:</div>
+                <div class="col" th:utext="${userInfo.getFullName()}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col">Số điện thoại:</div>
+                <div class="col-6"
+                     th:utext="${userInfo.getPhoneNumber().substring(0, 3)} + '******' + ${userInfo.getPhoneNumber().substring(7)} + '(Chưa xác thực)'"></div>
+                <div class="col"><input type="button" value="Xác thực số điện thoại"
+                                        th:if="${#request.userPrincipal.getName()} == ${user.username}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col">E-mail:</div>
+                <div class="col-6" th:utext="${userInfo.getEmailShow()} + '(Chưa xác thực)'"></div>
+                <div class="col"><input type="button" value="Xác thực email"
+                                        th:if="${#request.userPrincipal.getName()} == ${user.username}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col-3">Nhóm tài khoản:</div>
+                <div class="col" th:utext="${user.getRole().substring(5)}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col">Mật khẩu:</div>
+                <div class="col-6">********</div>
+                <div class="col"><input type="button" value="Đổi mật khẩu"
+                                        th:if="${#request.userPrincipal.getName()} == ${user.username}"></div>
+            </div>
+            <div class="row p-2">
+                <div class="col text-center"><input type="button" value="Cập nhật thông tin"
+                                                    th:if="${#request.userPrincipal.getName()} == ${user.username}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
